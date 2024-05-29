@@ -5,12 +5,26 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "infra",
-	Short: "The infra binary",
-	Long:  `The infra binary. Deploy base infra, shared resources, and services.`,
+	Use:   "cli",
+	Short: "The cli",
+	Long:  `The cli. Deploy base infra, shared resources, and services.`,
+}
+
+func viperConfig() {
+	viper.SetDefault("do-region", "sfo2")
+
+	viper.SetDefault("state-store", "aws")
+	viper.SetDefault("aws-region", "us-west-2")
+	viper.SetDefault("aws-s3-bucket", "wha-infra-terraform-state")
+	viper.SetDefault("aws-dynamodb-table", "wha-infra-terraform-lock")
+}
+
+func init() {
+	cobra.OnInitialize(viperConfig)
 }
 
 func Execute() {
