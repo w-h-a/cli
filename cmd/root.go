@@ -25,6 +25,9 @@ func viperConfig() {
 
 func init() {
 	cobra.OnInitialize(viperConfig)
+
+	rootCmd.PersistentFlags().StringP("token", "t", "", "Provider token")
+	viper.BindPFlag("token", rootCmd.PersistentFlags().Lookup("token"))
 }
 
 func Execute() {
