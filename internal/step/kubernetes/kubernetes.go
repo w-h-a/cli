@@ -30,7 +30,7 @@ func (k *Kubernetes) Steps() ([]step.Step, error) {
 
 	k8s := terraform.NewTask(
 		task.TaskWithName(k8sName),
-		task.TaskWithSource(fmt.Sprintf("https://github.com/w-h-a/kubernetes-%s.git", k.Provider)),
+		task.TaskWithSource(fmt.Sprintf("%s/kubernetes-%s.git", viper.GetString("infra-base-source"), k.Provider)),
 		task.TaskWithPath(fmt.Sprintf("/tmp/%s", k8sName)),
 		terraform.TerraformWithVars(vars),
 	)

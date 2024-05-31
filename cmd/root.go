@@ -19,8 +19,11 @@ func viperConfig() {
 
 	viper.SetDefault("state-store", "aws")
 	viper.SetDefault("aws-region", "us-west-2")
+
+	// TODO: take via flags
 	viper.SetDefault("aws-s3-bucket", "wha-infra-terraform-state")
 	viper.SetDefault("aws-dynamodb-table", "wha-infra-terraform-lock")
+	viper.SetDefault("infra-base-source", "https://github.com/w-h-a")
 }
 
 func init() {
