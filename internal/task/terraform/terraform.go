@@ -114,10 +114,16 @@ func (t *terraformExecutor) writeStateFiles() error {
 			return err
 		}
 
-		return t.writeRemoteStatesFileAWS()
+		if err := t.writeRemoteStatesFileAWS(); err != nil {
+			return err
+		}
 	default:
 		return fmt.Errorf("%s is not a supported remote state backend", stateStore)
 	}
+
+	fmt.Fprintf(os.Stdout, "successfully wrote state files to %s\n", t.options.Path)
+
+	return nil
 }
 
 func (t *terraformExecutor) writeBackendFileAWS() error {

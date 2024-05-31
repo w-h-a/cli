@@ -18,3 +18,7 @@ test:
 .PHONY: build
 build:
 	CGO_ENABLED=0 go build -o /Users/wesleyanderson/repos/github.com/w-h-a/cli/bin/cli ./
+
+.PHONY: install
+install:
+	go install
