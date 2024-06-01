@@ -83,7 +83,7 @@ func (t *terraformExecutor) Validate() error {
 }
 
 func (t *terraformExecutor) Plan() error {
-	return nil
+	return t.executeTerraform(context.Background(), "plan")
 }
 
 func (t *terraformExecutor) Apply() error {

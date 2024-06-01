@@ -17,3 +17,21 @@ func ExecuteValidate(steps []Step) error {
 
 	return nil
 }
+
+func ExecutePlan(steps []Step) error {
+	for _, step := range steps {
+		for _, t := range step {
+			defer t.Finalize()
+
+			if err := t.Validate(); err != nil {
+				return err
+			}
+
+			if err := t.Plan(); err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
+}
