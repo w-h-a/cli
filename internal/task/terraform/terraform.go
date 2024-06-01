@@ -1,10 +1,15 @@
 package terraform
 
 import (
+	"bufio"
+	"context"
 	"fmt"
+	"io"
 	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"strings"
 	"text/template"
 
 	"github.com/go-git/go-git/v5"
@@ -66,6 +71,14 @@ func (t *terraformExecutor) Validate() error {
 		return err
 	}
 
+	if err := t.executeTerraform(context.Background(), "init"); err != nil {
+		return err
+	}
+
+	if err := t.executeTerraform(context.Background(), "validate"); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -84,6 +97,84 @@ func (t *terraformExecutor) Destroy() error {
 func (t *terraformExecutor) Finalize() error {
 	// return os.RemoveAll(t.options.Path)
 	return nil
+}
+
+func (t *terraformExecutor) executeTerraform(ctx context.Context, args ...string) error {
+	// set up terraform command
+	tf := exec.CommandContext(ctx, "terraform", args...)
+	tf.Dir = t.options.Path
+	tf.Env = os.Environ()
+
+	for k, v := range t.options.EnvVars {
+		tf.Env = append(tf.Env, fmt.Sprintf("%s=%s", k, v))
+	}
+
+	tfVars := map[string]string{}
+	if v, ok := t.options.Context.Value("tf_vars_key").(map[string]string); ok {
+		tfVars = v
+	}
+	for k, v := range tfVars {
+		tf.Env = append(tf.Env, fmt.Sprintf("TF_VAR_%s=%s", k, v))
+	}
+
+	stdout, err := tf.StdoutPipe()
+	if err != nil {
+		return fmt.Errorf("stdoutpip failed: %v", err)
+	}
+
+	stderr, err := tf.StderrPipe()
+	if err != nil {
+		return fmt.Errorf("stderrpipe failed: %v", err)
+	}
+
+	// wait so we don't truncate output from terraform
+	ioWait := make(chan struct{})
+	defer func() {
+		// wait for both routines (see below) to finish
+		// so we capture everything
+		<-ioWait
+		<-ioWait
+	}()
+
+	for _, ioPair := range []struct {
+		in  io.ReadCloser
+		out *os.File
+	}{
+		{in: stdout, out: os.Stdout},
+		{in: stderr, out: os.Stderr},
+	} {
+		go func(name string, in io.ReadCloser, out *os.File, done chan<- struct{}) {
+			defer func() {
+				done <- struct{}{}
+			}()
+
+			defer in.Close()
+
+			reader := bufio.NewReader(in)
+
+			for {
+				s, err := reader.ReadString('\n')
+				if err == nil || err == io.EOF {
+					if len(strings.TrimSpace(s)) != 0 {
+						fmt.Fprintf(out, "[%s] %s", name, s)
+					}
+					if err == io.EOF {
+						return
+					}
+				} else {
+					fmt.Fprintf(out, "[%s] error: %s\n", name, err.Error())
+					return
+				}
+			}
+
+		}(t.options.Name, ioPair.in, ioPair.out, ioWait)
+	}
+
+	if err := tf.Start(); err != nil {
+		return fmt.Errorf("failed to execute terraform: %v", err)
+	}
+
+	return tf.Wait()
 }
 
 func (t *terraformExecutor) executeGitClone() error {
