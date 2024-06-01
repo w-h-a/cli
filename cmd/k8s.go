@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/w-h-a/cli/internal/step"
+	"gopkg.in/yaml.v2"
 )
 
 var (
@@ -114,19 +115,28 @@ var (
 )
 
 func k8s() []step.Platform {
-	// TODO: take this stuff as cli input
-	platforms := []step.Platform{
-		{
-			Name: "platform",
-			Env:  "prod",
-			Regions: []step.Region{
-				{
-					Provider: "do",
-					Region:   viper.GetString("do-region"),
-				},
-			},
-		},
+	if len(viper.Get("config-file").(string)) == 0 {
+		fmt.Fprintf(os.Stderr, "no platforms defined in the config file %s\n", viper.Get("config-file"))
+		os.Exit(1)
 	}
+
+	configBytes, err := os.ReadFile(viper.Get("config-file").(string))
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "failed to read config file: %s\n", err.Error())
+		os.Exit(1)
+	}
+
+	platforms := []step.Platform{}
+
+	platform := step.Platform{}
+
+	// TODO: figure out how to unmarshal array of platforms from yaml
+	if err := yaml.Unmarshal(configBytes, &platform); err != nil {
+		fmt.Fprintf(os.Stderr, "failed to unmarshal config file: %s\n", err.Error())
+		os.Exit(1)
+	}
+
+	platforms = append(platforms, platform)
 
 	return platforms
 }

@@ -1,0 +1,5 @@
+name: "platform"
+env: "prod"
+regions:
+  - provider: do
+    region: sfo2

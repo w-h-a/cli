@@ -11,15 +11,15 @@ import (
 )
 
 type Platform struct {
-	Name    string
-	Env     string
-	Domain  string
-	Regions []Region
+	Name    string   `yaml:"name"`
+	Env     string   `yaml:"env"`
+	Domain  string   `yaml:"domain,omitempty"`
+	Regions []Region `yaml:"regions"`
 }
 
 type Region struct {
-	Provider string
-	Region   string
+	Provider string `yaml:"provider"`
+	Region   string `yaml:"region"`
 }
 
 func (p *Platform) InfraSteps() ([]Step, error) {

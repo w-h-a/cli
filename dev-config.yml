@@ -1,0 +1,5 @@
+name: "wha-platform"
+env: "dev"
+regions:
+  - provider: kind
+    region: local
