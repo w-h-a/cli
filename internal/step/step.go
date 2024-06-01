@@ -78,6 +78,7 @@ func ExecuteDestroy(steps []Step) error {
 		}
 	}
 
+	// now destroy stuff in the reversed order in which it was created
 	for i := len(steps) - 1; i >= 0; i-- {
 		for _, t := range steps[i] {
 			if !strings.Contains(t.Options().Source, "kubeconfig") {
