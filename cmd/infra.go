@@ -40,6 +40,30 @@ var (
 			fmt.Println("validation succeeded")
 		},
 	}
+
+	planInfraCmd = &cobra.Command{
+		Use:   "plan",
+		Short: "Plan terraform",
+		Long:  "Plan terraform.",
+		Run: func(cmd *cobra.Command, args []string) {
+			for _, p := range infra() {
+				// get the steps
+				steps, err := p.InfraSteps()
+				if err != nil {
+					fmt.Fprintf(os.Stderr, "%s\n", err.Error())
+					os.Exit(1)
+				}
+
+				// plan them
+				if err := step.ExecutePlan(steps); err != nil {
+					fmt.Fprintf(os.Stderr, "%s\n", err.Error())
+					os.Exit(1)
+				}
+			}
+
+			fmt.Println("plan succeeded")
+		},
+	}
 )
 
 func infra() []platform.Platform {
@@ -62,6 +86,7 @@ func infra() []platform.Platform {
 
 func init() {
 	infraCmd.AddCommand(validateInfraCmd)
+	infraCmd.AddCommand(planInfraCmd)
 
 	rootCmd.AddCommand(infraCmd)
 }
