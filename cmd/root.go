@@ -23,14 +23,14 @@ func viperConfig() {
 	// TODO: take via flags
 	viper.SetDefault("aws-s3-bucket", "wha-infra-terraform-state")
 	viper.SetDefault("aws-dynamodb-table", "wha-infra-terraform-lock")
-	viper.SetDefault("infra-base-source", "https://github.com/w-h-a")
+	viper.SetDefault("base-source", "https://github.com/w-h-a")
 }
 
 func init() {
 	cobra.OnInitialize(viperConfig)
 
-	rootCmd.PersistentFlags().StringP("token", "t", "", "Provider token")
-	viper.BindPFlag("token", rootCmd.PersistentFlags().Lookup("token"))
+	rootCmd.PersistentFlags().StringP("do-token", "d", "", "DO provider token")
+	viper.BindPFlag("do-token", rootCmd.PersistentFlags().Lookup("do-token"))
 }
 
 func Execute() {

@@ -17,6 +17,10 @@ type stateChecker struct {
 	options task.TaskOptions
 }
 
+func (s *stateChecker) Options() task.TaskOptions {
+	return s.options
+}
+
 func (s *stateChecker) Validate() error {
 	stateStore := viper.GetString("state-store")
 
@@ -113,6 +117,10 @@ func (s *stateChecker) validateAWS() error {
 	}
 
 	return nil
+}
+
+func (s *stateChecker) String() string {
+	return "state"
 }
 
 func NewTask(opts ...task.TaskOption) task.Task {
