@@ -10,20 +10,20 @@ import (
 )
 
 var (
-	infraCmd = &cobra.Command{
-		Use:   "infra",
-		Short: "Manage the platform's infrastructure",
-		Long:  "Manage the platform's infrastructure.",
+	k8sCmd = &cobra.Command{
+		Use:   "k8s",
+		Short: "Manage the platform's k8s cluster",
+		Long:  "Manage the platform's k8s cluster.",
 	}
 
-	validateInfraCmd = &cobra.Command{
+	validateK8sCmd = &cobra.Command{
 		Use:   "validate",
-		Short: "Validate terraform",
-		Long:  "Validate terraform.",
+		Short: "Validate k8s",
+		Long:  "Validate k8s.",
 		Run: func(cmd *cobra.Command, args []string) {
-			for _, p := range infra() {
+			for _, p := range k8s() {
 				// get the steps
-				steps, err := p.InfraSteps()
+				steps, err := p.K8sSteps()
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "%s\n", err.Error())
 					os.Exit(1)
@@ -40,14 +40,14 @@ var (
 		},
 	}
 
-	planInfraCmd = &cobra.Command{
+	planK8sCmd = &cobra.Command{
 		Use:   "plan",
-		Short: "Plan terraform",
-		Long:  "Plan terraform.",
+		Short: "Plan k8s",
+		Long:  "Plan k8s.",
 		Run: func(cmd *cobra.Command, args []string) {
-			for _, p := range infra() {
+			for _, p := range k8s() {
 				// get the steps
-				steps, err := p.InfraSteps()
+				steps, err := p.K8sSteps()
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "%s\n", err.Error())
 					os.Exit(1)
@@ -64,14 +64,14 @@ var (
 		},
 	}
 
-	applyInfraCmd = &cobra.Command{
+	applyK8sCmd = &cobra.Command{
 		Use:   "apply",
-		Short: "Apply terraform",
-		Long:  "Apply terraform.",
+		Short: "Apply k8s",
+		Long:  "Apply k8s.",
 		Run: func(cmd *cobra.Command, args []string) {
-			for _, p := range infra() {
+			for _, p := range k8s() {
 				// get the steps
-				steps, err := p.InfraSteps()
+				steps, err := p.K8sSteps()
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "%s\n", err.Error())
 					os.Exit(1)
@@ -88,14 +88,14 @@ var (
 		},
 	}
 
-	destroyInfraCmd = &cobra.Command{
+	destroyK8sCmd = &cobra.Command{
 		Use:   "destroy",
-		Short: "Destroy terraform",
-		Long:  "Destroy terraform.",
+		Short: "Destroy k8s",
+		Long:  "Destroy k8s.",
 		Run: func(cmd *cobra.Command, args []string) {
-			for _, p := range infra() {
+			for _, p := range k8s() {
 				// get the steps
-				steps, err := p.InfraSteps()
+				steps, err := p.K8sSteps()
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "%s\n", err.Error())
 					os.Exit(1)
@@ -113,7 +113,7 @@ var (
 	}
 )
 
-func infra() []step.Platform {
+func k8s() []step.Platform {
 	// TODO: take this stuff as cli input
 	platforms := []step.Platform{
 		{
@@ -132,10 +132,10 @@ func infra() []step.Platform {
 }
 
 func init() {
-	infraCmd.AddCommand(validateInfraCmd)
-	infraCmd.AddCommand(planInfraCmd)
-	infraCmd.AddCommand(applyInfraCmd)
-	infraCmd.AddCommand(destroyInfraCmd)
+	k8sCmd.AddCommand(validateK8sCmd)
+	k8sCmd.AddCommand(planK8sCmd)
+	k8sCmd.AddCommand(applyK8sCmd)
+	k8sCmd.AddCommand(destroyK8sCmd)
 
-	rootCmd.AddCommand(infraCmd)
+	rootCmd.AddCommand(k8sCmd)
 }

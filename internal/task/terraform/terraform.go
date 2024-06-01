@@ -45,7 +45,10 @@ type terraformExecutor struct {
 	options task.TaskOptions
 }
 
-// Validate attempts to fetch terraform and run `terraform init` and `terraform validate`
+func (t *terraformExecutor) Options() task.TaskOptions {
+	return t.options
+}
+
 func (t *terraformExecutor) Validate() error {
 	if err := os.MkdirAll(t.options.Path, 0o777); err != nil {
 		return err
@@ -87,16 +90,19 @@ func (t *terraformExecutor) Plan() error {
 }
 
 func (t *terraformExecutor) Apply() error {
-	return nil
+	return t.executeTerraform(context.Background(), "apply", "-auto-approve")
 }
 
 func (t *terraformExecutor) Destroy() error {
-	return nil
+	return t.executeTerraform(context.Background(), "destroy", "-auto-approve")
 }
 
 func (t *terraformExecutor) Finalize() error {
-	// return os.RemoveAll(t.options.Path)
-	return nil
+	return os.RemoveAll(t.options.Path)
+}
+
+func (t *terraformExecutor) String() string {
+	return "terraform"
 }
 
 func (t *terraformExecutor) executeTerraform(ctx context.Context, args ...string) error {
