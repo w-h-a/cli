@@ -13,8 +13,8 @@ import (
 var (
 	serviceCmd = &cobra.Command{
 		Use:   "service",
-		Short: "Manage the platform's service's",
-		Long:  "Manage the platform's k8s cluster.",
+		Short: "Manage the platform's services",
+		Long:  "Manage the platform's services.",
 	}
 
 	validateServiceCmd = &cobra.Command{
