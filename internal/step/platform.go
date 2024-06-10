@@ -168,6 +168,7 @@ func (p *Platform) ServiceSteps() ([]Step, error) {
 		vars["service_version"] = viper.GetString("service-version")
 		vars["service_port"] = viper.GetString("service-port")
 		vars["service_image"] = viper.GetString("service-image")
+		vars["image_pull_policy"] = viper.GetString("image-pull-policy")
 
 		service := terraform.NewTask(
 			task.TaskWithName(serviceName),

@@ -162,5 +162,8 @@ func init() {
 	serviceCmd.PersistentFlags().StringP("service-image", "", "", "The service's base repo/image")
 	viper.BindPFlag("service-image", serviceCmd.PersistentFlags().Lookup("service-image"))
 
+	serviceCmd.PersistentFlags().StringP("image-pull-policy", "", "", "The k8s image pull policy")
+	viper.BindPFlag("image-pull-policy", serviceCmd.PersistentFlags().Lookup("image-pull-policy"))
+
 	rootCmd.AddCommand(serviceCmd)
 }
