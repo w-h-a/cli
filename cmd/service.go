@@ -147,6 +147,9 @@ func init() {
 	serviceCmd.AddCommand(applyServiceCmd)
 	serviceCmd.AddCommand(destroyServiceCmd)
 
+	serviceCmd.PersistentFlags().StringP("resource-namespace", "", "", "The namespace of shared resources")
+	viper.BindPFlag("resource-namespace", serviceCmd.PersistentFlags().Lookup("resource-namespace"))
+
 	serviceCmd.PersistentFlags().StringP("service-namespace", "", "", "The service's namespace")
 	viper.BindPFlag("service-namespace", serviceCmd.PersistentFlags().Lookup("service-namespace"))
 

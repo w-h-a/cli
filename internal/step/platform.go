@@ -226,6 +226,7 @@ func (p *Platform) ServiceSteps() ([]Step, error) {
 
 		vars := map[string]string{}
 
+		vars["resource_namespace"] = viper.GetString("resource-namespace")
 		vars["service_namespace"] = viper.GetString("service-namespace")
 		vars["service_name"] = viper.GetString("service-name")
 		vars["service_version"] = viper.GetString("service-version")
