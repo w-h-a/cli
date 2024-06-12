@@ -11,7 +11,7 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "cli",
 	Short: "The cli",
-	Long:  `The cli. Deploy base infra, shared resources, and services.`,
+	Long:  `The cli. Deploy base infra, shared ad hoc resources, and services.`,
 }
 
 func viperConfig() {
