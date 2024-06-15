@@ -10,7 +10,6 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-
 var (
 	natsCmd = &cobra.Command{
 		Use:   "nats",
