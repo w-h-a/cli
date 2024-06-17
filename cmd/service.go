@@ -159,8 +159,14 @@ func init() {
 	serviceCmd.PersistentFlags().StringP("service-version", "", "", "The service's version")
 	viper.BindPFlag("service-version", serviceCmd.PersistentFlags().Lookup("service-version"))
 
+	serviceCmd.PersistentFlags().StringP("service-type", "", "", "The service's type")
+	viper.BindPFlag("service-type", serviceCmd.PersistentFlags().Lookup("service-type"))
+
 	serviceCmd.PersistentFlags().StringP("service-port", "", "", "The service's port")
 	viper.BindPFlag("service-port", serviceCmd.PersistentFlags().Lookup("service-port"))
+
+	serviceCmd.PersistentFlags().StringP("node-port", "", "", "The node's port")
+	viper.BindPFlag("node-port", serviceCmd.PersistentFlags().Lookup("node-port"))
 
 	serviceCmd.PersistentFlags().StringP("service-image", "", "", "The service's base repo/image")
 	viper.BindPFlag("service-image", serviceCmd.PersistentFlags().Lookup("service-image"))
