@@ -20,6 +20,7 @@ func viperConfig() {
 	viper.SetDefault("aws-s3-bucket", "wha-infra-terraform-state")
 	viper.SetDefault("aws-dynamodb-table", "wha-infra-terraform-lock")
 	viper.SetDefault("base-source", "https://github.com/w-h-a")
+	viper.SetDefault("node-port", "0")
 }
 
 func init() {

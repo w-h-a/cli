@@ -293,7 +293,9 @@ func (p *Platform) ServiceSteps() ([]Step, error) {
 		vars["service_namespace"] = viper.GetString("service-namespace")
 		vars["service_name"] = viper.GetString("service-name")
 		vars["service_version"] = viper.GetString("service-version")
+		vars["service_type"] = viper.GetString("service-type")
 		vars["service_port"] = viper.GetString("service-port")
+		vars["node_port"] = viper.GetString("node-port")
 		vars["service_image"] = viper.GetString("service-image")
 		vars["image_pull_policy"] = viper.GetString("image-pull-policy")
 
