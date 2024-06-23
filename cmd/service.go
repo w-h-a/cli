@@ -174,5 +174,11 @@ func init() {
 	serviceCmd.PersistentFlags().StringP("image-pull-policy", "", "", "The k8s image pull policy")
 	viper.BindPFlag("image-pull-policy", serviceCmd.PersistentFlags().Lookup("image-pull-policy"))
 
+	serviceCmd.PersistentFlags().StringP("admin", "", "", "The admin id")
+	viper.BindPFlag("admin", serviceCmd.PersistentFlags().Lookup("admin"))
+
+	serviceCmd.PersistentFlags().StringP("secret", "", "", "The admin secret")
+	viper.BindPFlag("secret", serviceCmd.PersistentFlags().Lookup("secret"))
+
 	rootCmd.AddCommand(serviceCmd)
 }

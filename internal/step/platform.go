@@ -298,6 +298,8 @@ func (p *Platform) ServiceSteps() ([]Step, error) {
 		vars["node_port"] = viper.GetString("node-port")
 		vars["service_image"] = viper.GetString("service-image")
 		vars["image_pull_policy"] = viper.GetString("image-pull-policy")
+		vars["admin"] = viper.GetString("admin")
+		vars["secret"] = viper.GetString("secret")
 
 		service := terraform.NewTask(
 			task.TaskWithName(serviceName),
