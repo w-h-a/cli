@@ -102,6 +102,7 @@ func (p *Platform) K8sSteps() ([]Step, error) {
 		vars := map[string]string{}
 
 		vars["resource_namespace"] = strings.ToLower(fmt.Sprintf("%s-resource", p.Name))
+		vars["app_namespace"] = strings.ToLower(fmt.Sprintf("%s-app", p.Name))
 
 		namespace := terraform.NewTask(
 			task.TaskWithName(namespaceName),
@@ -290,6 +291,7 @@ func (p *Platform) ServiceSteps() ([]Step, error) {
 		vars := map[string]string{}
 
 		vars["resource_namespace"] = viper.GetString("resource-namespace")
+		vars["app_namespace"] = viper.GetString("app-namespace")
 		vars["service_namespace"] = viper.GetString("service-namespace")
 		vars["service_name"] = viper.GetString("service-name")
 		vars["service_version"] = viper.GetString("service-version")
