@@ -183,5 +183,8 @@ func init() {
 	serviceCmd.PersistentFlags().StringP("secret", "", "", "The admin secret")
 	viper.BindPFlag("secret", serviceCmd.PersistentFlags().Lookup("secret"))
 
+	serviceCmd.PersistentFlags().StringP("payment-key", "", "", "The payment secret")
+	viper.BindPFlag("payment-key", serviceCmd.PersistentFlags().Lookup("payment-key"))
+
 	rootCmd.AddCommand(serviceCmd)
 }
