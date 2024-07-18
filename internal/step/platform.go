@@ -302,6 +302,7 @@ func (p *Platform) ServiceSteps() ([]Step, error) {
 		vars["image_pull_policy"] = viper.GetString("image-pull-policy")
 		vars["admin"] = viper.GetString("admin")
 		vars["secret"] = viper.GetString("secret")
+		vars["payment_key"] = viper.GetString("payment-key")
 
 		service := terraform.NewTask(
 			task.TaskWithName(serviceName),

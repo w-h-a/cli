@@ -125,7 +125,7 @@ func (t *terraformExecutor) executeTerraform(ctx context.Context, args ...string
 
 	stdout, err := tf.StdoutPipe()
 	if err != nil {
-		return fmt.Errorf("stdoutpip failed: %v", err)
+		return fmt.Errorf("stdoutpipe failed: %v", err)
 	}
 
 	stderr, err := tf.StderrPipe()
