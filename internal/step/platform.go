@@ -103,6 +103,8 @@ func (p *Platform) K8sSteps() ([]Step, error) {
 
 		vars["resource_namespace"] = strings.ToLower(fmt.Sprintf("%s-resource", p.Name))
 		vars["app_namespace"] = strings.ToLower(fmt.Sprintf("%s-app", p.Name))
+		vars["content_namespace"] = strings.ToLower(fmt.Sprintf("%s-content", p.Name))
+		vars["misc_namespace"] = strings.ToLower(fmt.Sprintf("%s-misc", p.Name))
 
 		namespace := terraform.NewTask(
 			task.TaskWithName(namespaceName),
