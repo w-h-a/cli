@@ -305,6 +305,9 @@ func (p *Platform) ServiceSteps() ([]Step, error) {
 		vars["admin"] = viper.GetString("admin")
 		vars["secret"] = viper.GetString("secret")
 		vars["payment_key"] = viper.GetString("payment-key")
+		vars["enable_tls"] = viper.GetString("enable-tls")
+		vars["cert_provider"] = viper.GetString("cert-provider")
+		vars["hosts"] = viper.GetString("hosts")
 
 		service := terraform.NewTask(
 			task.TaskWithName(serviceName),
