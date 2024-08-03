@@ -186,5 +186,14 @@ func init() {
 	serviceCmd.PersistentFlags().StringP("payment-key", "", "", "The payment secret")
 	viper.BindPFlag("payment-key", serviceCmd.PersistentFlags().Lookup("payment-key"))
 
+	serviceCmd.PersistentFlags().StringP("enable-tls", "", "false", "Enable TLS")
+	viper.BindPFlag("enable-tls", serviceCmd.PersistentFlags().Lookup("enable-tls"))
+
+	serviceCmd.PersistentFlags().StringP("cert-provider", "", "", "The cert provider")
+	viper.BindPFlag("cert-provider", serviceCmd.PersistentFlags().Lookup("cert-provider"))
+
+	serviceCmd.PersistentFlags().StringP("hosts", "", "", "Comma separated list of hosts")
+	viper.BindPFlag("hosts", serviceCmd.PersistentFlags().Lookup("hosts"))
+
 	rootCmd.AddCommand(serviceCmd)
 }
