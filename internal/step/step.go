@@ -23,16 +23,35 @@ func ExecuteValidate(steps []Step) error {
 }
 
 func ExecutePlan(steps []Step) error {
+	// first find the kubeconfig
 	for _, step := range steps {
 		for _, t := range step {
-			defer t.Finalize()
+			if strings.Contains(t.Options().Source, "kubeconfig") {
+				defer t.Finalize()
 
-			if err := t.Validate(); err != nil {
-				return err
+				if err := t.Validate(); err != nil {
+					return err
+				}
+
+				if err := t.Apply(); err != nil {
+					return err
+				}
 			}
+		}
+	}
 
-			if err := t.Plan(); err != nil {
-				return err
+	for _, step := range steps {
+		for _, t := range step {
+			if !strings.Contains(t.Options().Source, "kubeconfig") {
+				defer t.Finalize()
+
+				if err := t.Validate(); err != nil {
+					return err
+				}
+
+				if err := t.Plan(); err != nil {
+					return err
+				}
 			}
 		}
 	}
