@@ -308,6 +308,8 @@ func (p *Platform) ServiceSteps() ([]Step, error) {
 		vars["enable_tls"] = viper.GetString("enable-tls")
 		vars["cert_provider"] = viper.GetString("cert-provider")
 		vars["hosts"] = viper.GetString("hosts")
+		vars["aws_access_key"] = viper.GetString("aws-access-key")
+		vars["aws_secret_access_key"] = viper.GetString("aws-secret-access-key")
 
 		service := terraform.NewTask(
 			task.TaskWithName(serviceName),
