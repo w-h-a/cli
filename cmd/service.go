@@ -195,5 +195,11 @@ func init() {
 	serviceCmd.PersistentFlags().StringP("hosts", "", "", "Comma separated list of hosts")
 	viper.BindPFlag("hosts", serviceCmd.PersistentFlags().Lookup("hosts"))
 
+	serviceCmd.PersistentFlags().StringP("aws-access-key", "", "", "AWS access key")
+	viper.BindPFlag("aws-access-key", serviceCmd.PersistentFlags().Lookup("aws-access-key"))
+
+	serviceCmd.PersistentFlags().StringP("aws-secret-access-key", "", "", "AWS secret access key")
+	viper.BindPFlag("aws-secret-access-key", serviceCmd.PersistentFlags().Lookup("aws-secret-access-key"))
+
 	rootCmd.AddCommand(serviceCmd)
 }
