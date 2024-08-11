@@ -147,29 +147,23 @@ func init() {
 	runtimeCmd.AddCommand(applyRuntimeCmd)
 	runtimeCmd.AddCommand(destroyRuntimeCmd)
 
-	runtimeCmd.PersistentFlags().StringP("resource-namespace", "", "", "The namespace of shared resources")
-	viper.BindPFlag("resource-namespace", runtimeCmd.PersistentFlags().Lookup("resource-namespace"))
+	runtimeCmd.PersistentFlags().StringP("runtime-namespace", "", "", "The runtime's namespace")
+	viper.BindPFlag("runtime-namespace", runtimeCmd.PersistentFlags().Lookup("runtime-namespace"))
 
-	runtimeCmd.PersistentFlags().StringP("app-namespace", "", "", "The namespace of the app")
-	viper.BindPFlag("app-namespace", runtimeCmd.PersistentFlags().Lookup("app-namespace"))
+	runtimeCmd.PersistentFlags().StringP("runtime-name", "", "", "The runtime's name")
+	viper.BindPFlag("runtime-name", runtimeCmd.PersistentFlags().Lookup("runtime-name"))
 
-	runtimeCmd.PersistentFlags().StringP("service-namespace", "", "", "The service's namespace")
-	viper.BindPFlag("service-namespace", runtimeCmd.PersistentFlags().Lookup("service-namespace"))
+	runtimeCmd.PersistentFlags().StringP("runtime-version", "", "", "The runtime's version")
+	viper.BindPFlag("runtime-version", runtimeCmd.PersistentFlags().Lookup("runtime-version"))
 
-	runtimeCmd.PersistentFlags().StringP("service-name", "", "", "The service's name")
-	viper.BindPFlag("service-name", runtimeCmd.PersistentFlags().Lookup("service-name"))
+	runtimeCmd.PersistentFlags().StringP("runtime-port", "", "", "The runtime's port")
+	viper.BindPFlag("runtime-port", runtimeCmd.PersistentFlags().Lookup("runtime-port"))
 
-	runtimeCmd.PersistentFlags().StringP("service-version", "", "", "The service's version")
-	viper.BindPFlag("service-version", runtimeCmd.PersistentFlags().Lookup("service-version"))
+	runtimeCmd.PersistentFlags().StringP("runtime-image", "", "", "The runtime's base repo/image")
+	viper.BindPFlag("runtime-image", runtimeCmd.PersistentFlags().Lookup("runtime-image"))
 
-	runtimeCmd.PersistentFlags().StringP("service-port", "", "", "The service's port")
-	viper.BindPFlag("service-port", runtimeCmd.PersistentFlags().Lookup("service-port"))
-
-	runtimeCmd.PersistentFlags().StringP("service-image", "", "", "The service's base repo/image")
-	viper.BindPFlag("service-image", runtimeCmd.PersistentFlags().Lookup("service-image"))
-
-	runtimeCmd.PersistentFlags().StringP("image-pull-policy", "", "", "The k8s image pull policy")
-	viper.BindPFlag("image-pull-policy", runtimeCmd.PersistentFlags().Lookup("image-pull-policy"))
+	runtimeCmd.PersistentFlags().StringP("runtime-pull-policy", "", "", "The k8s runtime pull policy")
+	viper.BindPFlag("runtime-pull-policy", runtimeCmd.PersistentFlags().Lookup("runtime-pull-policy"))
 
 	rootCmd.AddCommand(runtimeCmd)
 }
