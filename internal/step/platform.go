@@ -288,18 +288,16 @@ func (p *Platform) RuntimeSteps() ([]Step, error) {
 		}
 
 		// 2.2. runtime
-		serviceName := p.internalName(r, fmt.Sprintf("%s.%s", viper.GetString("service-name"), viper.GetString("service-namespace")))
+		serviceName := p.internalName(r, fmt.Sprintf("%s.%s", viper.GetString("runtime-name"), viper.GetString("runtime-namespace")))
 
 		vars := map[string]string{}
 
-		vars["resource_namespace"] = viper.GetString("resource-namespace")
-		vars["app_namespace"] = viper.GetString("app-namespace")
-		vars["service_namespace"] = viper.GetString("service-namespace")
-		vars["service_name"] = viper.GetString("service-name")
-		vars["service_version"] = viper.GetString("service-version")
-		vars["service_port"] = viper.GetString("service-port")
-		vars["service_image"] = viper.GetString("service-image")
-		vars["image_pull_policy"] = viper.GetString("image-pull-policy")
+		vars["service_namespace"] = viper.GetString("runtime-namespace")
+		vars["service_name"] = viper.GetString("runtime-name")
+		vars["service_version"] = viper.GetString("runtime-version")
+		vars["service_port"] = viper.GetString("runtime-port")
+		vars["service_image"] = viper.GetString("runtime-image")
+		vars["image_pull_policy"] = viper.GetString("runtime-pull-policy")
 
 		service := terraform.NewTask(
 			task.TaskWithName(serviceName),
