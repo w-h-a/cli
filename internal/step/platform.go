@@ -246,6 +246,75 @@ func (p *Platform) NatsSteps() ([]Step, error) {
 	return steps, nil
 }
 
+func (p *Platform) RuntimeSteps() ([]Step, error) {
+	steps := []Step{}
+
+	// 1. ensure remote state is available
+	stateChecker := state.NewTask(
+		task.TaskWithName(p.Name + "check my state"),
+	)
+
+	steps = append(steps, Step{stateChecker})
+
+	for _, r := range p.Regions {
+		env := map[string]string{}
+
+		env["KUBE_CONFIG_PATH"] = "~/.kube/config"
+
+		// 2.1. kubeconfig
+		if r.Provider != "kind" {
+			configName := p.internalName(r, "kubeconfig")
+
+			remoteStates := map[string]string{}
+
+			remoteStates["k8s"] = p.internalName(r, "k8s")
+
+			vars := map[string]string{}
+
+			vars["do_token"] = viper.GetString("do-token")
+			vars["kubernetes"] = r.Provider
+
+			config := terraform.NewTask(
+				task.TaskWithName(configName),
+				task.TaskWithSource(fmt.Sprintf("%s/kubeconfig.git", viper.GetString("base-source"))),
+				task.TaskWithPath(fmt.Sprintf("/tmp/%s", configName)),
+				terraform.TerraformWithRemoteStates(remoteStates),
+				terraform.TerraformWithVars(vars),
+			)
+
+			steps = append(steps, Step{config})
+
+			env["KUBE_CONFIG_PATH"] = fmt.Sprintf("/tmp/%s/kubeconfig", configName)
+		}
+
+		// 2.2. runtime
+		serviceName := p.internalName(r, fmt.Sprintf("%s.%s", viper.GetString("service-name"), viper.GetString("service-namespace")))
+
+		vars := map[string]string{}
+
+		vars["resource_namespace"] = viper.GetString("resource-namespace")
+		vars["app_namespace"] = viper.GetString("app-namespace")
+		vars["service_namespace"] = viper.GetString("service-namespace")
+		vars["service_name"] = viper.GetString("service-name")
+		vars["service_version"] = viper.GetString("service-version")
+		vars["service_port"] = viper.GetString("service-port")
+		vars["service_image"] = viper.GetString("service-image")
+		vars["image_pull_policy"] = viper.GetString("image-pull-policy")
+
+		service := terraform.NewTask(
+			task.TaskWithName(serviceName),
+			task.TaskWithSource(fmt.Sprintf("%s/kubernetes-runtime.git", viper.GetString("base-source"))),
+			task.TaskWithPath(fmt.Sprintf("/tmp/%s", serviceName)),
+			task.TaskWithEnvVars(env),
+			terraform.TerraformWithVars(vars),
+		)
+
+		steps = append(steps, Step{service})
+	}
+
+	return steps, nil
+}
+
 func (p *Platform) ServiceSteps() ([]Step, error) {
 	steps := []Step{}
 
