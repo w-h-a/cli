@@ -292,6 +292,8 @@ func (p *Platform) RuntimeSteps() ([]Step, error) {
 
 		vars := map[string]string{}
 
+		vars["resource_namespace"] = viper.GetString("runtime-resource-namespace")
+		vars["app_namespace"] = viper.GetString("runtime-app-namespace")
 		vars["service_namespace"] = viper.GetString("runtime-namespace")
 		vars["service_name"] = viper.GetString("runtime-name")
 		vars["service_version"] = viper.GetString("runtime-version")

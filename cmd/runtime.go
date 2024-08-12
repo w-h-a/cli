@@ -147,6 +147,12 @@ func init() {
 	runtimeCmd.AddCommand(applyRuntimeCmd)
 	runtimeCmd.AddCommand(destroyRuntimeCmd)
 
+	runtimeCmd.PersistentFlags().StringP("runtime-resource-namespace", "", "", "The namespace of shared resources")
+	viper.BindPFlag("runtime-resource-namespace", runtimeCmd.PersistentFlags().Lookup("runtime-resource-namespace"))
+
+	runtimeCmd.PersistentFlags().StringP("runtime-app-namespace", "", "", "The namespace of the app")
+	viper.BindPFlag("runtime-app-namespace", runtimeCmd.PersistentFlags().Lookup("runtime-app-namespace"))
+
 	runtimeCmd.PersistentFlags().StringP("runtime-namespace", "", "", "The runtime's namespace")
 	viper.BindPFlag("runtime-namespace", runtimeCmd.PersistentFlags().Lookup("runtime-namespace"))
 
